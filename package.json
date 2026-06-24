@@ -1,7 +1,7 @@
 {
   "name": "phoenix-status-bot",
   "version": "1.0.0",
-  "description": "API Perantara untuk tarik status Phoenix Tool",
+  "description": "API Perantara untuk menarik status Phoenix Tool",
   "main": "api/status.js",
   "dependencies": {
     "axios": "^1.6.0",
