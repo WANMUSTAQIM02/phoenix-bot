@@ -7,7 +7,7 @@ module.exports = async (req, res) => {
 
     try {
         // KOD RAHSIA: Menyamar sebagai Googlebot (Pintas Cloudflare 403)
-        const response = await axios.get('https://phoenixservicetool.com/', {
+        const response = await axios.get('https://phoenixservicetool.com/api/v1/status', {
             headers: { 
                 'User-Agent': 'Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)',
                 'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
