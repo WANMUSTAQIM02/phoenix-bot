@@ -14,7 +14,7 @@ module.exports = async (req, res) => {
     try {
         // Tarik data terus dari API sebenar Phoenix
         // Axios akan secara automatik melakukan 'decompress' data Gzip
-        const response = await axios.get('https://phoenixservicetool.com/api/v1/status', {
+        const response = await axios.get('https://phoenixservicetool.com/api/v1/#server-status', {
             headers: { 
                 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
                 'Accept': 'application/json, text/plain, */*',
