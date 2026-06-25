@@ -1,32 +1,38 @@
 const axios = require('axios');
-const cheerio = require('cheerio');
 
 module.exports = async (req, res) => {
+    // Membenarkan website WAN TECH untuk mengambil data (CORS)
+    res.setHeader('Access-Control-Allow-Credentials', true);
     res.setHeader('Access-Control-Allow-Origin', '*');
-    
-    // API Key ScraperAPI bos
-    const API_KEY = '22ee181cf8792b5fbf9c95433d76d364'; 
+    res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept');
+
+    if (req.method === 'OPTIONS') {
+        return res.status(200).end();
+    }
 
     try {
-        // Kita hantar request melalui ScraperAPI supaya Cloudflare tak detect
-        const url = `http://api.scraperapi.com?api_key=${API_KEY}&url=https://phoenixservicetool.com/#server-status`;
-        const response = await axios.get(url);
-
-        const $ = cheerio.load(response.data);
-        const results = [];
-
-        // Phoenix mungkin gunakan class .server-item atau id lain
-        // Jika data kosong, saya akan tunjukkan cara tukar class selepas ini
-        $('.server-item').each((i, el) => {
-            results.push({
-                name: $(el).find('.service-name').text().trim(),
-                status: $(el).find('.status-text').text().trim()
-            });
+        // Tarik data terus dari API sebenar Phoenix
+        // Axios akan secara automatik melakukan 'decompress' data Gzip
+        const response = await axios.get('https://phoenixservicetool.com/api/v1/status', {
+            headers: { 
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+                'Accept': 'application/json, text/plain, */*',
+                'Referer': 'https://phoenixservicetool.com/'
+            }
         });
 
-        res.status(200).json({ success: true, data: results });
+        // Hantar balik data JSON yang bersih ke website WAN TECH bos
+        res.status(200).json({ 
+            success: true, 
+            data: response.data 
+        });
 
     } catch (error) {
-        res.status(500).json({ success: false, error: "ScraperAPI gagal: " + error.message });
+        // Hantar mesej ralat jika gagal
+        res.status(500).json({ 
+            success: false, 
+            error: "Gagal tarik API: " + error.message 
+        });
     }
 };
