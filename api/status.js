@@ -9,7 +9,7 @@ module.exports = async (req, res) => {
 
     try {
         // Kita hantar request melalui ScraperAPI supaya Cloudflare tak detect
-        const url = `http://api.scraperapi.com?api_key=${API_KEY}&url=https://phoenixservicetool.com/`;
+        const url = `http://api.scraperapi.com?api_key=${API_KEY}&url=https://phoenixservicetool.com/#server-status`;
         const response = await axios.get(url);
 
         const $ = cheerio.load(response.data);
